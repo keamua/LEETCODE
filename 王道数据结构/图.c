@@ -154,4 +154,122 @@ void dfs2(algraph g,int i,int j,bool can_reach){
             dfs2(g,p->adjvex,j,can_reach);
     }
 }
+void bfs2(algraph g,int i,int j){
+    queue q;initqueue(q);enqueue(q,i);
+    int u;
+    while(!isempty(q)){
+        dequeue(q,u);
+        visited[u]=1;
+        if(u==j)
+            return 1;
+        for(arcnode *p=g.vertices[u].first;p;p=p->next){
+            if(p==j)
+                return 1;
+            if(!visited[p->adjvex]){
+                enqueue(q,p->adjvex);
+                visited[p->adjvex]=1;
+            }
+        }
+    }
+    return 0;
+}
+
+
+//5.邻接表的图输出所有i到j的简单路径
+
+void findpath(algraph *g,int u,int v,int path[],int d){
+    int w,i;
+    arcnode *p;
+    d++;
+    path[d]=u;
+    visited[u]=1;
+    if(u==v)
+        printf("path[]");
+    p=g->vertices[u].first;
+    while(p){
+        w=p->adjvex;
+        if(visited[w]==0)
+            findpath(g,w,v,path,d);
+        p=p->next;
+    }
+    visited[u]=0;
+}
+
+
+
+
+
+
+
+//图的应用
+
+
+//1.prim算法
+
+void prim(g,t){
+    t=null;
+    u={w};
+    while((V-U)!=∅){
+        (u,v)=min(u∈U,v∈(V-U))
+        t=t∪{(u,v)};
+        U=U∪{v};
+    }
+}
+
+//2.kruskal算法
+void kruskal(v,t){
+    t=v;
+    nums=n;
+    while(nums>1){
+        (v,u)=min(g.e);
+        if(v∈ && u ∉){
+            t=t∪{(u,v)};
+            nums--;
+        }
+    }
+}
+
+//拓扑排序
+bool topologicalsort(algraph g){
+    stack s;initstack(s);int in[maxsize],i;
+    for(i=0;i<g.vernum;i++)
+        if(in[i]==0)
+            push(s,i);
+    int count=0;
+    while(!isempty(s)){
+        pop(s,i);
+        printf("%d\n",i);
+        count++;
+        for(arcnode *p=g.vertices[i].first;p;p=p->next){
+            int v=p->adjvex;
+            if(!(--in[v]))
+                push(s,v);
+        }
+    }
+    if(count<g.vernum)
+        return false;
+    else
+        return true;
+}
+
+//9.有向无环图实现拓扑排序
+void dfstraverse(algraph g){
+    for(int v=0;v<g.vernum;++v)
+        visited[v]=false;
+    time = 0;
+    for(int v=0;v<g.vernum;++v)
+        if(!visited[v])
+            dfs3(g,v);
+}
+int finishtime[maxsize];
+void dfs3(algraph g,int v){
+    visited[v]=true;
+    visit(v);
+    for(arcnode *w=g.vertices[v].first;w;w=w->next)
+        if(!visited[w->adjvex]){
+            dfs3(g,w);
+        }
+    time = time +1;finishtime[v]=time;
+}
+
 
